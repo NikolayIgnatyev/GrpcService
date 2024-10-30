@@ -1,7 +1,8 @@
 using GrpcServiceServer.Services;
+using Server;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Services.AddSingleton<MyMemoryCache>();
 // Add services to the container.
 builder.Services.AddGrpc();
 

@@ -8,6 +8,7 @@ package greet;
 service Encoder {
   // Sends a greeting
   rpc Encrypt (TextForEncrypt) returns (EncryptText);
+  rpc GetInfo(InfoRequest) returns (InfoResponse);
 }
 
 // The request message containing the user's name.
@@ -20,4 +21,11 @@ message TextForEncrypt {
 // The response message containing the greetings.
 message EncryptText {
   string response = 1;
+}
+
+
+message InfoRequest {}
+
+message InfoResponse {
+    string content=1;
 }

@@ -37,9 +37,29 @@ namespace GrpcServiceServer.Services
                 }
             }
 
+
+
             return Task.FromResult(new EncryptText
             {
                 Response = "Зашифрованый текст " + retVal
+            });
+        }
+
+
+        public override Task<InfoResponse> GetInfo(InfoRequest request, ServerCallContext context)
+        {
+            string headers = "";
+            // получаем все заголовки запроса
+            foreach (var header in context.RequestHeaders)
+            {
+               headers += header + "\n";    // получаем ключ и значение заголовка
+            }
+            // получаем один заголовок по названию - user-agent
+            
+            // отправляем ответ
+            return Task.FromResult(new InfoResponse
+            {
+                Content = headers
             });
         }
     }
