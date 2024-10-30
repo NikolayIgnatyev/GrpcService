@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34804.81
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrpcService1", "GrpcService1\GrpcService1.csproj", "{E7A098FD-0F6D-45C7-8504-9B689242B5FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Server", "GrpcService1\Server.csproj", "{E7A098FD-0F6D-45C7-8504-9B689242B5FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{81953774-60E8-43A5-B749-FDE02FEFA22B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{81953774-60E8-43A5-B749-FDE02FEFA22B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

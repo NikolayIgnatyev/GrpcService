@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "GrpcServiceServer";
+option csharp_namespace = "EncoderClientApp";
 
 package greet;
 
@@ -15,6 +15,7 @@ message TextForEncrypt {
   string plainText = 1;
   sint32 key = 2;
 }
+
 
 // The response message containing the greetings.
 message EncryptText {
