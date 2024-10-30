@@ -1,6 +1,7 @@
 ﻿using Grpc.Core;
 using GrpcServiceServer;
 using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Server.DataBase;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace GrpcServiceServer.Services
@@ -37,6 +38,19 @@ namespace GrpcServiceServer.Services
                 }
             }
 
+
+            using (ApplicationContext db = new ApplicationContext())
+            {
+
+                Log log = new Log {
+                    Text = request.PlainText,
+                    Key = request.Key,
+                    Encrypt = retVal
+                };
+
+                db.Logs.Add(log);
+                db.SaveChanges();
+            }
 
 
             return Task.FromResult(new EncryptText

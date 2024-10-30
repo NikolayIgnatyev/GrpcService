@@ -5,11 +5,13 @@ namespace Server.DataBase
     public class ApplicationContext : DbContext 
     {
         public DbSet<Log> Logs { get; set; } = null!;
-        public ApplicationContext(DbContextOptions<ApplicationContext> options)
-            : base(options)
+
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            Database.EnsureCreated();   // создаем базу данных при первом обращении
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Log>();
