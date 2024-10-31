@@ -7,31 +7,22 @@ namespace Server.Encoding
     {
         public string Encrypt(string text, int key)
         {
-            //символы русской азбуки
-            const string alfabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-            //добавляем в алфавит маленькие буквы
-            var fullAlfabet = alfabet + alfabet.ToLower();
-            var letterQty = fullAlfabet.Length;
-            var retVal = "";
-            for (int i = 0; i < text.Length; i++)
+            char[] buffer = text.ToCharArray();
+            for (int i = 0; i < buffer.Length; i++)
             {
-                var c = text[i];
-                var index = fullAlfabet.IndexOf(c);
-                if (index < 0)
+                char letter = buffer[i];
+                letter = (char)(letter + key);
+                if (letter > 'z') // Считаем только маленькие буквы
                 {
-                    //если символ не найден, то добавляем его в неизменном виде
-                    retVal += c.ToString();
+                    letter = (char)(letter - 26);
                 }
-                else
+                else if (letter < 'a')
                 {
-                    var codeIndex = (letterQty + index + key) % letterQty;
-                    retVal += fullAlfabet[codeIndex];
+                    letter = (char)(letter + 26);
                 }
+                buffer[i] = letter;
             }
-
-
-
-            return retVal;
+            return new string(buffer);
         }
     }
 }

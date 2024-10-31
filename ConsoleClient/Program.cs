@@ -2,7 +2,8 @@
 using Grpc.Net.Client;
 
 using var channel = GrpcChannel.ForAddress("https://localhost:7090");
-
+// создаем клиент
+var encoderClient = new Encoder.EncoderClient(channel);
 while (true)
 {
     Console.Write("Введите текст: ");
@@ -19,8 +20,7 @@ while (true)
         Console.WriteLine("Введите коректное число!!!");
         return;
     }
-    // создаем клиент
-    var encoderClient = new Encoder.EncoderClient(channel);
+
     // обмениваемся сообщениями с сервером
     var encryptText = await encoderClient.EncryptAsync(new TextForEncrypt { PlainText = plainText, Key = key });
     var info = await encoderClient.GetInfoAsync(new InfoRequest());

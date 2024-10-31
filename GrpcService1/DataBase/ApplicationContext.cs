@@ -1,20 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Server.DataBase.Models;
 
 namespace Server.DataBase
 {
     public class ApplicationContext : DbContext 
     {
-        public DbSet<Log> Logs { get; set; } = null!;
+        public DbSet<Cache> Caches { get; set; } = null!;
 
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        public ApplicationContext(DbContextOptions<ApplicationContext> dbContext) : base(dbContext)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
+            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Log>();
+            modelBuilder.Entity<Cache>();
         }
     }
 }
