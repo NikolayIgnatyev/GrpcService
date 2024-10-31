@@ -1,4 +1,4 @@
-﻿using EncoderClientApp;
+﻿using EncoderApp;
 using Grpc.Net.Client;
 
 using var channel = GrpcChannel.ForAddress("https://localhost:7090");

@@ -1,43 +1,24 @@
 ﻿using Grpc.Core;
-using GrpcServiceServer;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using Server.DataBase;
-using static System.Net.Mime.MediaTypeNames;
+using EncoderApp;
+using Server.Interfaces;
+
 
 namespace GrpcServiceServer.Services
 {
     public class EncoderService : Encoder.EncoderBase
     {
-        private readonly ILogger<EncoderService> _logger;
-        public EncoderService(ILogger<EncoderService> logger)
+        private readonly ICipher _cipherService;
+
+        public EncoderService(ICipher caesarCipher) 
         {
-            _logger = logger;
+            _cipherService = caesarCipher;
         }
 
         public override Task<EncryptText> Encrypt(TextForEncrypt request, ServerCallContext context)
         {
-            //символы русской азбуки
-            const string alfabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ";
-            //добавляем в алфавит маленькие буквы
-            var fullAlfabet = alfabet + alfabet.ToLower();
-            var letterQty = fullAlfabet.Length;
-            var retVal = "";
-            for (int i = 0; i < request.PlainText.Length; i++)
-            {
-                var c = request.PlainText[i];
-                var index = fullAlfabet.IndexOf(c);
-                if (index < 0)
-                {
-                    //если символ не найден, то добавляем его в неизменном виде
-                    retVal += c.ToString();
-                }
-                else
-                {
-                    var codeIndex = (letterQty + index + request.Key) % letterQty;
-                    retVal += fullAlfabet[codeIndex];
-                }
-            }
 
+            var encryptedText = _cipherService.Encrypt(request.PlainText, request.Key);
 
             using (ApplicationContext db = new ApplicationContext())
             {
@@ -45,7 +26,7 @@ namespace GrpcServiceServer.Services
                 Log log = new Log {
                     Text = request.PlainText,
                     Key = request.Key,
-                    Encrypt = retVal
+                    Encrypt = encryptedText
                 };
 
                 db.Logs.Add(log);
@@ -55,7 +36,7 @@ namespace GrpcServiceServer.Services
 
             return Task.FromResult(new EncryptText
             {
-                Response = "Зашифрованый текст " + retVal
+                Response = "Зашифрованый текст " + encryptedText
             });
         }
 

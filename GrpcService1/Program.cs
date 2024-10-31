@@ -1,8 +1,11 @@
 using GrpcServiceServer.Services;
 using Server;
+using Server.Encoding;
+using Server.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<MyMemoryCache>();
+builder.Services.AddSingleton<ICipher, CaesarCipher>();
 // Add services to the container.
 builder.Services.AddGrpc();
 
