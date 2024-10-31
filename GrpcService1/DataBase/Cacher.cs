@@ -30,9 +30,12 @@ namespace Server.DataBase
             return _context.Caches.FirstOrDefault(c => c.Text == text && c.Key == key);
         }
 
-        public string GetInfo()
+        public string GetInfo(ICipher cipher)
         {
-            return $"{_context.Caches.Count()} Записей в кеше.";
+            string serviceName = "Сервис - " + cipher.GetType().Name;
+            string serviceCacheType = "База данных - MS SQL";
+            string cacheSize = "Записей в кеше - " + _context.Caches.Count();
+            return "\n" + serviceName + "\n" + serviceCacheType + "\n" + cacheSize;
         }
     }
 }
