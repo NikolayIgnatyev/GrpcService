@@ -1,13 +1,15 @@
-﻿using EncoderApp;
+﻿using ConsoleClient.Interfaces;
+using ConsoleClient.Services;
+using EncoderApp;
 using Grpc.Net.Client;
 
 using var channel = GrpcChannel.ForAddress("https://localhost:7090");
 // создаем клиент
-var encoderClient = new Encoder.EncoderClient(channel);
+ICipher client = new CipherGrpcClient(channel);
 while (true)
 {
     Console.Write("Введите текст: ");
-    var plainText = Console.ReadLine();
+    string? plainText = Console.ReadLine();
     Console.Write("Введите ключ: ");
     int key;
     try
@@ -22,9 +24,7 @@ while (true)
     }
 
     // обмениваемся сообщениями с сервером
-    var encryptText = await encoderClient.EncryptAsync(new TextForEncrypt { PlainText = plainText, Key = key });
-    var info = await encoderClient.GetInfoAsync(new InfoRequest());
-    Console.WriteLine($"Ответ сервера: {encryptText.Response}");
-    Console.WriteLine($"Ответ сервера: {info.Content}");
+    string encryptText = client.Encrypt(plainText, key);
+    Console.WriteLine($"Ответ сервера: " + encryptText);
 }
 
